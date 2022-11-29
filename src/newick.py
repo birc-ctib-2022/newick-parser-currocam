@@ -48,7 +48,7 @@ class Node:
 
 # A tree is either a leaf or an inner node with sub-trees
 Tree = Union[Leaf, Node]
-
+Node([Leaf("A"), Node([Leaf("B"), Leaf("C")])])
 
 def parse(tree: str) -> Tree:
     """
@@ -57,4 +57,20 @@ def parse(tree: str) -> Tree:
     >>> parse("(A, (B, C))")
     (A,(B,C))
     """
-    ...
+    stack = list()
+    for el in tokenize(tree):
+        match el:
+            case "(":
+                stack.append(el)
+            case ")":
+                new_tree = list()
+                leaf= stack.pop()
+                while leaf != "(":
+                    new_tree.append(leaf)
+                    leaf= stack.pop()
+                new_tree.reverse()
+                stack.append(Node(new_tree))
+            case _:
+                stack.append(Leaf(el))
+    return stack.pop()
+

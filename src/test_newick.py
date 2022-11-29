@@ -1,6 +1,10 @@
 """Testing our Newick parser."""
 
 
+from newick import parse
+
+
 def test_me() -> None:
     """Test what you need to test."""
-    assert 2 + 2 == 4
+    tree = parse("(A, (B, C))")
+    assert str(tree) == "(A,(B,C))"
